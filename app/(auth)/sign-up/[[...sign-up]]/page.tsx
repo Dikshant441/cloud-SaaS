@@ -9,10 +9,10 @@ export default function Page() {
         signInUrl="/sign-in"
         appearance={{
           elements: {
-            formButtonPrimary: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
-            card: "shadow-md border border-gray-200 rounded-md p-6",
+            formButtonPrimary: " hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+            card: "shadow-md border border-gray-200 rounded-md p-6 ",
             headerTitle: "text-3xl font-semibold text-center mb-4",
-            headerSubtitle: "text-sm text-gray-500 mb-4",
+            headerSubtitle: "text-sm text-black mb-4",
           },
         }}
       />

@@ -62,7 +62,7 @@ export default function AppLayout({
             <div className="flex-1">
               <Link href="/home" onClick={handleLogoClick}>
                 <div className="btn btn-ghost normal-case text-2xl font-bold tracking-tight cursor-pointer">
-                  Cloudinary Showcase
+                CloudView Gallery
                 </div>
               </Link>
             </div>
