@@ -13,6 +13,7 @@ function Home() {
       const response = await axios.get("/api/videos");
       if (Array.isArray(response.data)) {
         setVideos(response.data);
+        console.log("videos", response.data);
       } else {
         throw new Error(" Unexpected response format");
       }
@@ -28,16 +29,42 @@ function Home() {
     fetchVideos();
   }, [fetchVideos]);
 
-  const handleDownload = useCallback((url: string, title: string) => {
-    () => {
+  const handleDownload = useCallback(async (url: string, title: string) => {
+    try {
+      // Fetch the video as a blob to handle cross-origin downloads
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
       const link = document.createElement("a");
-      link.href = url;
+      link.href = blobUrl;
       link.setAttribute("download", `${title}.mp4`);
-      link.setAttribute("target", "_blank");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    };
+
+      // Clean up the blob URL
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      // Fallback: open in new tab
+      window.open(url, "_blank");
+    }
+  }, []);
+
+  const handleDelete = useCallback(async (id: string, publicId: string) => {
+    if (!window.confirm("Are you sure you want to delete this video?")) return;
+
+    try {
+      await axios.delete("/api/videos", {
+        data: { id, publicId },
+      });
+      // Remove from UI immediately
+      setVideos((prev) => prev.filter((v) => v.id !== id));
+    } catch (error) {
+      console.error("Failed to delete video:", error);
+      alert("Failed to delete video");
+    }
   }, []);
 
   if (loading) {
@@ -46,7 +73,7 @@ function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Videos</h1>
+      <h1 className="text-2xl font-bold mb-4">Gallery</h1>
       {videos.length === 0 ? (
         <div className="text-center text-lg text-gray-500">
           No videos available
@@ -58,6 +85,7 @@ function Home() {
               key={video.id}
               video={video}
               onDownload={handleDownload}
+              onDelete={handleDelete}
             />
           ))}
         </div>

@@ -21,6 +21,9 @@ model Video {
     originalSize   String
     compressedSize String
     duration       Float
+    userId         String   // Clerk user ID who uploaded this video
     createdAt      DateTime @default(now())
     updatedAt      DateTime @updatedAt
+
+    @@index([userId]) // Index for faster queries by user
 }

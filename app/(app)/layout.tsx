@@ -11,6 +11,7 @@ import {
   Share2Icon,
   UploadIcon,
   ImageIcon,
+  LogInIcon,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -37,6 +38,7 @@ export default function AppLayout({
 
   const handleSignOut = async () => {
     await signOut();
+    router.push("/sign-in");
   };
 
   return (
@@ -63,7 +65,7 @@ export default function AppLayout({
             <div className="flex-1">
               <Link href="/home" onClick={handleLogoClick}>
                 <div className="btn btn-ghost normal-case text-2xl font-bold tracking-tight cursor-pointer">
-                CloudView Gallery
+                  CloudView Gallery
                 </div>
               </Link>
             </div>
@@ -77,6 +79,9 @@ export default function AppLayout({
                         alt={
                           user.username || user.emailAddresses[0].emailAddress
                         }
+                        width={32}
+                        height={32}
+                        className="rounded-full"
                       />
                     </div>
                   </div>
@@ -125,7 +130,7 @@ export default function AppLayout({
               </li>
             ))}
           </ul>
-          {user && (
+          {user ? (
             <div className="p-4">
               <button
                 onClick={handleSignOut}
@@ -134,6 +139,16 @@ export default function AppLayout({
                 <LogOutIcon className="mr-2 h-5 w-5" />
                 Sign Out
               </button>
+            </div>
+          ) : (
+            <div className="p-4">
+              <Link
+                href="/sign-in"
+                className="btn btn-outline btn-primary w-full"
+              >
+                <LogInIcon className="mr-2 h-5 w-5" />
+                Sign In
+              </Link>
             </div>
           )}
         </aside>

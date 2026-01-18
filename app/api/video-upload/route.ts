@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json(
         { error: "Cloudinary credentials not found" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -62,11 +62,12 @@ export async function POST(request: NextRequest) {
           (error, result) => {
             if (error) reject(error);
             else resolve(result as CloudinaryUploadResult);
-          }
+          },
         );
         uploadStream.end(buffer);
-      }
+      },
     );
+    console.log("result contain information", result);
     const video = await prisma.video.create({
       data: {
         title,
@@ -75,6 +76,7 @@ export async function POST(request: NextRequest) {
         originalSize: originalSize,
         compressedSize: String(result.bytes),
         duration: result.duration || 0,
+        userId: userId, // Associate video with the current user
       },
     });
     return NextResponse.json(video);

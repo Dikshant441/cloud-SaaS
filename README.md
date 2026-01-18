@@ -18,3 +18,8 @@
 
 ## For any queries related to the project, contact at singhdikshant200@gmail.com
 7. raise a star to support me
+
+
+what i added 
+1.d download functionaity
+2. it will show ol related video whih i uploaded
